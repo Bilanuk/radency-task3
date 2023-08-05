@@ -1,22 +1,13 @@
-import { Request, Response, Router } from "express";
-import { NoteRepository } from "../repositories/noteRepository";
-import { Note } from "../models/note";
-import { NoteCategory } from "../models/note";
-import * as yup from "yup";
-
-const noteSchema = yup.object().shape({
-  name: yup.string().required(),
-  category: yup.string().oneOf(Object.values(NoteCategory)).required(),
-  date: yup.string().required(),
-  content: yup.string().required(),
-  isArchived: yup.boolean().required(),
-});
+import { Request, Response } from "express";
+import { Note } from "../../models/note";
+import { NoteRepository } from "../../repositories/noteRepository";
+import { noteSchema } from './schema';
 
 export class NoteController {
   private noteRepository: NoteRepository;
 
-  constructor(noteRepository: NoteRepository) {
-    this.noteRepository = noteRepository;
+  constructor() {
+    this.noteRepository = new NoteRepository();
   }
 
   async getAllNotes(req: Request, res: Response) {
@@ -32,7 +23,7 @@ export class NoteController {
     const { id } = req.params;
     try {
       const note = await this.noteRepository.getNoteById(Number(id));
-      if (!note || note.isArchived) {
+      if (!note) {
         return res.status(404).json({ message: "Note not found" });
       }
       res.json(note);

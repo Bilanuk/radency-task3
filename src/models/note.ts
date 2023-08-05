@@ -1,4 +1,4 @@
-import { Model, Column, Table } from 'sequelize-typescript';
+import { Model, Column, Table, DataType } from 'sequelize-typescript';
 
 export enum NoteCategory {
   Idea = 'Idea',
@@ -14,7 +14,7 @@ export class Note extends Model<Note> {
   @Column
   name!: string;
 
-  @Column({ type: 'ENUM', values: Object.values(NoteCategory) })
+  @Column({ type: DataType.ENUM, values: Object.values(NoteCategory) })
   category!: NoteCategory;
 
   @Column
