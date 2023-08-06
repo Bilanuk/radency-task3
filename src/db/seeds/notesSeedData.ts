@@ -1,6 +1,6 @@
-import { NoteCategory } from "../src/models/note";
+import { NoteCategory } from "../../models/note";
 
-export const seedData = [
+export const notesSeedData = [
   {
     name: 'Note 1',
     category: NoteCategory.Idea,
@@ -34,7 +34,7 @@ export const seedData = [
     category: NoteCategory.Idea,
     date: '2023-08-07',
     content: 'Content for Note 5',
-    isArchived: false,
+    isArchived: true,
   },
   {
     name: 'Note 6',

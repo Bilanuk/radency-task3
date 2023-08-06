@@ -6,8 +6,11 @@
   "scripts": {
     "start": "ts-node src/index.ts",
     "live": "nodemon src/index.ts",
-    "db:drop": "sequelize db:drop",
-    "build": "tsc"
+    "build": "tsc",
+    "db:drop": "ts-node src/db/dropDB.ts",
+    "db:create": "ts-node src/db/createDB.ts",
+    "db:seed": "ts-node src/db/seedDB.ts",
+    "db:init": "yarn db:drop && yarn db:create && yarn db:seed"
   },
   "dependencies": {
     "@types/body-parser": "^1.19.2",

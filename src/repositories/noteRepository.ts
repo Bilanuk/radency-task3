@@ -1,5 +1,5 @@
 import { Note } from "../models/note";
-import { FindOptions, Sequelize } from "sequelize";
+import { FindOptions } from "sequelize/types";
 
 export class NoteRepository {
   async getAllNotes(): Promise<Note[]> {
@@ -11,18 +11,19 @@ export class NoteRepository {
     return Note.findByPk(id, options);
   }
 
-  async createNote(newNote: Note): Promise<void> {
-    await newNote.save();
+  async createNote(newNote: Note): Promise<Note> {
+    return await newNote.save();
   }
 
-  async updateNote(id: number, updatedNote: Note): Promise<void> {
-    const options: FindOptions = {
-      where: { id, isArchived: false },
-    };
-    const note = await Note.findOne(options);
-    if (note) {
-      await note.update(updatedNote.dataValues);
-    }
+  async updateNote(
+    id: number,
+    updatedNote: Note
+  ): Promise<{ affectedRows: number; updatedNoteData: Note }> {
+    const [affectedRows, [updatedNoteData]] = await Note.update(updatedNote, {
+      where: { id },
+      returning: true,
+    });
+    return { affectedRows, updatedNoteData };
   }
 
   async deleteNote(id: number): Promise<void> {
@@ -33,15 +34,8 @@ export class NoteRepository {
     }
   }
 
-  async getStats(): Promise<Record<string, Record<string, number>>> {
-    const options: FindOptions = {
-      attributes: [
-        "category",
-        "isArchived",
-        [Sequelize.fn("COUNT", Sequelize.col("category")), "count"],
-      ],
-      group: ["category", "isArchived"],
-    };
+  async getStats(): Promise<any> {
+    const options: FindOptions = { attributes: ["category", "isArchived"] };
     const notes = await Note.findAll(options);
 
     const stats: Record<string, Record<string, number>> = {};

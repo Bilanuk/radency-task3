@@ -1,8 +1,8 @@
-FROM node:20 
-WORKDIR /express_app 
-COPY package.json /express_app 
+FROM node:20
+WORKDIR /express_app
+COPY package.json /express_app
 COPY yarn.lock /express_app
-RUN yarn install 
+RUN yarn install
 COPY . /express_app
-CMD yarn start 
+CMD yarn db:init && yarn start
 EXPOSE 3000

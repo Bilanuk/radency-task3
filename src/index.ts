@@ -1,9 +1,9 @@
 import express from "express";
 import bodyParser from "body-parser";
-import { initializeDatabase } from "./database";
 import routes from "./routes/routes";
-import dotenv from "dotenv";
+import { sequelizeInstance } from './db/sequelizeInstance';
 
+import dotenv from "dotenv";
 dotenv.config();
 
 const PORT = process.env.PORT || 3000;
@@ -19,8 +19,17 @@ async function startServer() {
   });
 }
 
+async function connectToDatabase() {
+  try {
+    await sequelizeInstance.authenticate();
+    console.log("Connected to the database.");
+  } catch (error) {
+    console.error("Unable to connect to the database:", error);
+  }
+}
+
 async function initializeApp() {
-  await initializeDatabase();
+  await connectToDatabase();
   await startServer();
 }
 
