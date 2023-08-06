@@ -1,10 +1,10 @@
 import * as yup from "yup";
-import { NoteCategory } from "../../models/note";
+import { NoteCategory } from "../../../constants";
 
 const noteSchema = yup.object().shape({
   name: yup.string(),
   category: yup.string().oneOf(Object.values(NoteCategory)),
-  date: yup.string(),
+  dates: yup.array().of(yup.string()),
   content: yup.string(),
   isArchived: yup.boolean(),
 });

@@ -1,4 +1,4 @@
-import { sequelizeInstance } from "./sequelizeInstance";
+import sequelizeInstance from "./instances/sequelizeInstance";
 import { Note } from "../models/note";
 import { notesSeedData } from "./seeds/notesSeedData";
 

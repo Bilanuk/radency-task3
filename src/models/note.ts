@@ -1,10 +1,5 @@
 import { Model, Column, Table, DataType } from "sequelize-typescript";
-
-export enum NoteCategory {
-  Idea = "Idea",
-  Task = "Task",
-  RandomThought = "Random Thought",
-}
+import { NoteCategory } from "../../constants";
 
 @Table
 export class Note extends Model<Note> {
@@ -21,8 +16,8 @@ export class Note extends Model<Note> {
   })
   category!: NoteCategory;
 
-  @Column({ allowNull: false })
-  date!: string;
+  @Column({ allowNull: false, type: DataType.ARRAY(DataType.STRING) })
+  dates!: string[];
 
   @Column({ allowNull: false, validate: { notEmpty: true, len: [3, 500] } })
   content!: string;

@@ -13,7 +13,7 @@ DATABASE_HOST=localhost
 NODE_ENV=development
 ```
 
-* run 
+* run
 ```bash
 yarn install
 yarn db:init

@@ -1,7 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import routes from "./routes/routes";
-import { sequelizeInstance } from './db/sequelizeInstance';
+import sequelizeInstance from './db/instances/sequelizeInstance';
 
 import dotenv from "dotenv";
 dotenv.config();
