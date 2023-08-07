@@ -33,6 +33,7 @@ export class NoteController {
   async createNote(req: Request, res: Response) {
     const validatedNote = await noteSchema.validate({
       ...req.body,
+      dates: undefined,
       ...(req.body.content && { dates: dateParser(req.body.content) }),
     });
     const newNote = Note.build(validatedNote as Note);
@@ -45,6 +46,7 @@ export class NoteController {
     const { id } = req.params;
     const validatedNote = await noteSchema.validate({
       ...req.body,
+      dates: undefined,
       ...(req.body.content && { dates: dateParser(req.body.content) }),
     });
     const { affectedRows, updatedNoteData } =
