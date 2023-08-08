@@ -1,14 +1,36 @@
-import express, { Request, Response } from 'express';
+import express from "express";
+import bodyParser from "body-parser";
+import routes from "./routes/routes";
+import sequelizeInstance from './db/instances/sequelizeInstance';
 
-const app = express();
+import dotenv from "dotenv";
+dotenv.config();
 
-app.use(express.json());
+const PORT = process.env.PORT || 3000;
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello, World!');
-});
+async function startServer() {
+  const app = express();
+  app.use(bodyParser.json());
 
-const PORT = 3000;
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-});
+  app.use(routes());
+
+  app.listen(PORT, () => {
+    console.log(`Server is up and running on http://localhost:${PORT}`);
+  });
+}
+
+async function connectToDatabase() {
+  try {
+    await sequelizeInstance.authenticate();
+    console.log("Connected to the database.");
+  } catch (error) {
+    console.error("Unable to connect to the database:", error);
+  }
+}
+
+async function initializeApp() {
+  await connectToDatabase();
+  await startServer();
+}
+
+initializeApp();
